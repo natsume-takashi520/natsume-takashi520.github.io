@@ -1,0 +1,1149 @@
+---
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+
+  return posts.map((post) => ({
+    params: {
+      slug: post.id,
+    },
+
+    props: {
+      post,
+    },
+  }));
+}
+
+const { post } = Astro.props;
+
+const { Content } = await render(post);
+---
+
+<!doctype html>
+
+<html lang="zh-CN">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    {post.data.title} | Natsume's Blog
+  </title>
+
+  <meta
+    name="description"
+    content={post.data.description}
+  />
+
+</head>
+
+
+<body>
+
+
+  <!-- ============================== -->
+  <!-- 顶部导航 -->
+  <!-- ============================== -->
+
+  <header class="site-header">
+
+    <div class="header-inner">
+
+      <a
+        href="/"
+        class="logo"
+      >
+        Natsume's Blog
+      </a>
+
+
+      <nav class="nav">
+
+        <a href="/">
+          首页
+        </a>
+
+        <a href="/mobrei/">
+          茂灵
+        </a>
+
+        <a href="/hobby/">
+          兴趣
+        </a>
+
+        <a href="/essay/">
+          随笔
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ============================== -->
+  <!-- 主体 -->
+  <!-- ============================== -->
+
+  <main class="page">
+
+    <article class="article">
+
+
+      <!-- ============================== -->
+      <!-- 文章头部 -->
+      <!-- ============================== -->
+
+      <header class="article-header">
+
+
+        <div class="category">
+
+          <span>
+            {post.data.category}
+          </span>
+
+          {
+            post.data.type && (
+              <>
+                <span class="dot">·</span>
+
+                <span>
+                  {post.data.type}
+                </span>
+              </>
+            )
+          }
+
+        </div>
+
+
+        <h1>
+          {post.data.title}
+        </h1>
+
+
+        <div class="date">
+
+          {post.data.date.toLocaleDateString("zh-CN")}
+
+        </div>
+
+
+      </header>
+
+
+
+      <!-- ============================== -->
+      <!-- 分割线 -->
+      <!-- ============================== -->
+
+      <div class="divider"></div>
+
+
+
+      <!-- ============================== -->
+      <!-- 正文 -->
+      <!-- ============================== -->
+
+      <div class="content">
+
+        <Content />
+
+      </div>
+
+
+
+      <!-- ============================== -->
+      <!-- 文章底部 -->
+      <!-- ============================== -->
+
+      <div class="article-footer">
+
+        <a href="/">
+          ← 返回首页
+        </a>
+
+      </div>
+
+
+    </article>
+
+  </main>
+
+
+
+  <!-- ============================== -->
+  <!-- 页脚 -->
+  <!-- ============================== -->
+
+  <footer>
+
+    © 2026 Natsume's Blog
+
+  </footer>
+
+
+
+</body>
+
+</html>
+
+
+<style>
+
+/* ================================================= */
+/* 基础 */
+/* ================================================= */
+
+:global(*) {
+
+  box-sizing:
+    border-box;
+
+}
+
+
+:global(html) {
+
+  scroll-behavior:
+    smooth;
+
+}
+
+
+:global(body) {
+
+  margin:
+    0;
+
+  background:
+    #f6f6f4;
+
+  color:
+    #292929;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Microsoft YaHei",
+    sans-serif;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+}
+
+
+
+/* ================================================= */
+/* 顶部导航 */
+/* ================================================= */
+
+.site-header {
+
+  position:
+    sticky;
+
+  top:
+    0;
+
+  z-index:
+    10;
+
+  background:
+    rgba(255, 255, 255, 0.94);
+
+  border-bottom:
+    1px solid #e9e9e7;
+
+  backdrop-filter:
+    blur(10px);
+
+}
+
+
+.header-inner {
+
+  width:
+    min(1000px, 92%);
+
+  min-height:
+    68px;
+
+  margin:
+    0 auto;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+}
+
+
+.logo {
+
+  color:
+    #222;
+
+  font-size:
+    19px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    -0.02em;
+
+  text-decoration:
+    none;
+
+  transition:
+    opacity 0.2s ease;
+
+}
+
+
+.logo:hover {
+
+  opacity:
+    0.6;
+
+}
+
+
+.nav {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    24px;
+
+}
+
+
+.nav a {
+
+  position:
+    relative;
+
+  color:
+    #666;
+
+  font-size:
+    14px;
+
+  text-decoration:
+    none;
+
+  transition:
+    color 0.2s ease;
+
+}
+
+
+.nav a:hover {
+
+  color:
+    #111;
+
+}
+
+
+
+/* ================================================= */
+/* 页面 */
+/* ================================================= */
+
+.page {
+
+  width:
+    min(820px, 92%);
+
+  margin:
+    65px auto 90px;
+
+}
+
+
+
+/* ================================================= */
+/* 文章卡片 */
+/* ================================================= */
+
+.article {
+
+  padding:
+    62px 68px;
+
+  background:
+    #ffffff;
+
+  border:
+    1px solid #e7e7e5;
+
+  border-radius:
+    18px;
+
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.035);
+
+}
+
+
+
+/* ================================================= */
+/* 文章头部 */
+/* ================================================= */
+
+.article-header {
+
+  text-align:
+    left;
+
+}
+
+
+.category {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    0;
+
+  margin-bottom:
+    16px;
+
+  color:
+    #888;
+
+  font-size:
+    14px;
+
+  line-height:
+    1.5;
+
+}
+
+
+.dot {
+
+  margin:
+    0 7px;
+
+  color:
+    #b5b5b5;
+
+}
+
+
+.article-header h1 {
+
+  margin:
+    0;
+
+  color:
+    #202020;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Microsoft YaHei",
+    sans-serif;
+
+  font-size:
+    38px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.4;
+
+  letter-spacing:
+    -0.025em;
+
+}
+
+
+.date {
+
+  margin-top:
+    15px;
+
+  color:
+    #aaa;
+
+  font-size:
+    13px;
+
+  line-height:
+    1.5;
+
+}
+
+
+
+/* ================================================= */
+/* 分割线 */
+/* ================================================= */
+
+.divider {
+
+  height:
+    1px;
+
+  margin:
+    38px 0;
+
+  background:
+    #eeeeec;
+
+}
+
+
+
+/* ================================================= */
+/* 正文 */
+/* ================================================= */
+
+.content {
+
+  color:
+    #292929;
+
+  font-family:
+    "SimSun",
+    "宋体",
+    "Songti SC",
+    "Noto Serif CJK SC",
+    "Source Han Serif SC",
+    serif;
+
+  font-size:
+    18px;
+
+  line-height:
+    2.05;
+
+  letter-spacing:
+    0.025em;
+
+}
+
+
+
+/* ================================================= */
+/* 正文标题 */
+/* ================================================= */
+
+.content :global(h1) {
+
+  margin:
+    55px 0 24px;
+
+  color:
+    #222;
+
+  font-family:
+    "SimSun",
+    "宋体",
+    "Songti SC",
+    "Noto Serif CJK SC",
+    "Source Han Serif SC",
+    serif;
+
+  font-size:
+    30px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.55;
+
+}
+
+
+.content :global(h2) {
+
+  margin:
+    46px 0 20px;
+
+  color:
+    #222;
+
+  font-family:
+    "SimSun",
+    "宋体",
+    "Songti SC",
+    "Noto Serif CJK SC",
+    "Source Han Serif SC",
+    serif;
+
+  font-size:
+    25px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.55;
+
+}
+
+
+.content :global(h3) {
+
+  margin:
+    36px 0 16px;
+
+  color:
+    #333;
+
+  font-family:
+    "SimSun",
+    "宋体",
+    "Songti SC",
+    "Noto Serif CJK SC",
+    "Source Han Serif SC",
+    serif;
+
+  font-size:
+    21px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.55;
+
+}
+
+
+
+/* ================================================= */
+/* 段落 */
+/* ================================================= */
+
+.content :global(p) {
+
+  margin:
+    22px 0;
+
+}
+
+
+
+/* ================================================= */
+/* 列表 */
+/* ================================================= */
+
+.content :global(ul),
+.content :global(ol) {
+
+  margin:
+    22px 0;
+
+  padding-left:
+    30px;
+
+}
+
+
+.content :global(li) {
+
+  margin:
+    9px 0;
+
+}
+
+
+
+/* ================================================= */
+/* 链接 */
+/* ================================================= */
+
+.content :global(a) {
+
+  color:
+    #555;
+
+  text-decoration:
+    underline;
+
+  text-decoration-color:
+    #cfcfcf;
+
+  text-underline-offset:
+    4px;
+
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
+
+}
+
+
+.content :global(a:hover) {
+
+  color:
+    #111;
+
+  text-decoration-color:
+    #777;
+
+}
+
+
+
+/* ================================================= */
+/* 引用 */
+/* ================================================= */
+
+.content :global(blockquote) {
+
+  margin:
+    30px 0;
+
+  padding:
+    15px 22px;
+
+  background:
+    #fafaf8;
+
+  border-left:
+    3px solid #c9c9c6;
+
+  color:
+    #666;
+
+  font-family:
+    "SimSun",
+    "宋体",
+    "Songti SC",
+    "Noto Serif CJK SC",
+    "Source Han Serif SC",
+    serif;
+
+}
+
+
+.content :global(blockquote p) {
+
+  margin:
+    8px 0;
+
+}
+
+
+
+/* ================================================= */
+/* 图片 */
+/* ================================================= */
+
+.content :global(img) {
+
+  display:
+    block;
+
+  max-width:
+    100%;
+
+  height:
+    auto;
+
+  margin:
+    35px auto;
+
+  border-radius:
+    9px;
+
+}
+
+
+
+/* ================================================= */
+/* 图片说明 */
+/* ================================================= */
+
+.content :global(figure) {
+
+  margin:
+    35px 0;
+
+}
+
+
+.content :global(figcaption) {
+
+  margin-top:
+    10px;
+
+  color:
+    #999;
+
+  font-size:
+    13px;
+
+  text-align:
+    center;
+
+}
+
+
+
+/* ================================================= */
+/* 表格 */
+/* ================================================= */
+
+.content :global(table) {
+
+  width:
+    100%;
+
+  margin:
+    30px 0;
+
+  border-collapse:
+    collapse;
+
+  font-size:
+    16px;
+
+}
+
+
+.content :global(th),
+.content :global(td) {
+
+  padding:
+    11px 13px;
+
+  border:
+    1px solid #e5e5e3;
+
+}
+
+
+.content :global(th) {
+
+  background:
+    #f7f7f5;
+
+  font-weight:
+    700;
+
+}
+
+
+
+/* ================================================= */
+/* 行内代码 */
+/* ================================================= */
+
+.content :global(code) {
+
+  padding:
+    2px 6px;
+
+  background:
+    #f2f2f0;
+
+  border-radius:
+    4px;
+
+  font-family:
+    Consolas,
+    "Courier New",
+    monospace;
+
+  font-size:
+    0.88em;
+
+}
+
+
+
+/* ================================================= */
+/* 代码块 */
+/* ================================================= */
+
+.content :global(pre) {
+
+  overflow-x:
+    auto;
+
+  margin:
+    30px 0;
+
+  padding:
+    20px;
+
+  background:
+    #f5f5f3;
+
+  border:
+    1px solid #e6e6e4;
+
+  border-radius:
+    9px;
+
+  line-height:
+    1.7;
+
+}
+
+
+.content :global(pre code) {
+
+  padding:
+    0;
+
+  background:
+    transparent;
+
+}
+
+
+
+/* ================================================= */
+/* 文章底部 */
+/* ================================================= */
+
+.article-footer {
+
+  margin-top:
+    55px;
+
+  padding-top:
+    25px;
+
+  border-top:
+    1px solid #eeeeec;
+
+}
+
+
+.article-footer a {
+
+  color:
+    #888;
+
+  font-size:
+    14px;
+
+  text-decoration:
+    none;
+
+  transition:
+    color 0.2s ease;
+
+}
+
+
+.article-footer a:hover {
+
+  color:
+    #222;
+
+}
+
+
+
+/* ================================================= */
+/* 页脚 */
+/* ================================================= */
+
+footer {
+
+  padding:
+    0 20px 40px;
+
+  color:
+    #aaa;
+
+  font-size:
+    13px;
+
+  text-align:
+    center;
+
+}
+
+
+
+/* ================================================= */
+/* 手机 */
+/* ================================================= */
+
+@media (max-width: 700px) {
+
+
+  .header-inner {
+
+    min-height:
+      auto;
+
+    padding:
+      17px 0;
+
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+
+    gap:
+      14px;
+
+  }
+
+
+  .nav {
+
+    flex-wrap:
+      wrap;
+
+    gap:
+      12px 20px;
+
+  }
+
+
+  .page {
+
+    width:
+      94%;
+
+    margin:
+      28px auto 50px;
+
+  }
+
+
+  .article {
+
+    padding:
+      32px 22px;
+
+    border-radius:
+      12px;
+
+  }
+
+
+  .article-header h1 {
+
+    font-size:
+      28px;
+
+    line-height:
+      1.45;
+
+  }
+
+
+  .category {
+
+    font-size:
+      13px;
+
+  }
+
+
+  .content {
+
+    font-size:
+      17px;
+
+    line-height:
+      1.95;
+
+    letter-spacing:
+      0.015em;
+
+  }
+
+
+  .content :global(h1) {
+
+    margin-top:
+      40px;
+
+    font-size:
+      25px;
+
+  }
+
+
+  .content :global(h2) {
+
+    margin-top:
+      35px;
+
+    font-size:
+      21px;
+
+  }
+
+
+  .content :global(h3) {
+
+    margin-top:
+      28px;
+
+    font-size:
+      19px;
+
+  }
+
+
+  .content :global(table) {
+
+    display:
+      block;
+
+    overflow-x:
+      auto;
+
+    white-space:
+      nowrap;
+
+  }
+
+
+  .content :global(img) {
+
+    margin:
+      28px auto;
+
+  }
+
+}
+
+</style>

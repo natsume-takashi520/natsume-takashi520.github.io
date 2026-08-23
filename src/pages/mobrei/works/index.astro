@@ -1,0 +1,349 @@
+---
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("posts");
+
+const works = posts.filter(
+  (post) =>
+    post.data.category === "茂灵" &&
+    post.data.type === "作品"
+);
+---
+
+<!doctype html>
+
+<html lang="zh-CN">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>茂灵 · 作品 | Natsume's Blog</title>
+
+</head>
+
+<body>
+
+  <header>
+
+    <div class="header-inner">
+
+      <a href="/" class="logo">
+        Natsume's Blog
+      </a>
+
+      <nav>
+
+        <a href="/">首页</a>
+        <a href="/mobrei/">茂灵</a>
+        <a href="/hobby/">兴趣</a>
+        <a href="/essay/">随笔</a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <main>
+
+    <div class="breadcrumb">
+
+      <a href="/mobrei/">
+        茂灵
+      </a>
+
+      <span> / </span>
+
+      作品
+
+    </div>
+
+
+    <h1>
+      茂灵 · 作品
+    </h1>
+
+
+    <p class="intro">
+      茂灵相关的作品。
+    </p>
+
+
+    <section>
+
+      {
+        works.length === 0 ? (
+
+          <p class="empty">
+            暂时还没有作品。
+          </p>
+
+        ) : (
+
+          works.map((post) => (
+
+            <article>
+
+              <h2>
+
+                <a href={`/posts/${post.id}/`}>
+
+                  {post.data.title}
+
+                </a>
+
+              </h2>
+
+
+              <p>
+                {post.data.description}
+              </p>
+
+
+              <div class="date">
+
+                {post.data.date.toLocaleDateString("zh-CN")}
+
+              </div>
+
+            </article>
+
+          ))
+
+        )
+      }
+
+    </section>
+
+  </main>
+
+
+  <footer>
+
+    © 2026 Natsume's Blog
+
+  </footer>
+
+
+</body>
+
+</html>
+
+
+<style>
+
+:global(*) {
+  box-sizing: border-box;
+}
+
+:global(body) {
+
+  margin: 0;
+
+  background: #f7f7f7;
+
+  color: #222;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Microsoft YaHei",
+    sans-serif;
+
+}
+
+header {
+
+  background: white;
+
+  border-bottom:
+    1px solid #e5e5e5;
+
+}
+
+.header-inner {
+
+  width: min(900px, 92%);
+
+  min-height: 70px;
+
+  margin: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+}
+
+.logo {
+
+  color: #222;
+
+  font-weight: bold;
+
+  text-decoration: none;
+
+}
+
+nav {
+
+  display: flex;
+
+  gap: 20px;
+
+}
+
+nav a {
+
+  color: #555;
+
+  text-decoration: none;
+
+}
+
+main {
+
+  width: min(800px, 92%);
+
+  margin: 50px auto;
+
+}
+
+.breadcrumb {
+
+  color: #888;
+
+  font-size: 14px;
+
+}
+
+.breadcrumb a {
+
+  color: #666;
+
+}
+
+h1 {
+
+  margin-top: 25px;
+
+  font-size: 36px;
+
+}
+
+.intro {
+
+  color: #777;
+
+}
+
+article {
+
+  margin: 20px 0;
+
+  padding: 25px;
+
+  background: white;
+
+  border:
+    1px solid #e5e5e5;
+
+  border-radius: 10px;
+
+}
+
+article h2 {
+
+  margin-top: 0;
+
+}
+
+article h2 a {
+
+  color: #222;
+
+  text-decoration: none;
+
+}
+
+article h2 a:hover {
+
+  text-decoration: underline;
+
+}
+
+article p {
+
+  color: #666;
+
+  line-height: 1.7;
+
+}
+
+.date {
+
+  color: #999;
+
+  font-size: 13px;
+
+}
+
+.empty {
+
+  color: #999;
+
+}
+
+footer {
+
+  padding: 40px;
+
+  color: #999;
+
+  text-align: center;
+
+}
+
+@media (max-width: 700px) {
+
+  .header-inner {
+
+    padding: 18px 0;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 15px;
+
+  }
+
+  nav {
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+
+  }
+
+  main {
+
+    width: 94%;
+
+    margin: 40px auto;
+
+  }
+
+}
+
+</style>
