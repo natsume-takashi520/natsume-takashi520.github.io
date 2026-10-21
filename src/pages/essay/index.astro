@@ -1,11 +1,12 @@
+
 ---
 import { getCollection } from "astro:content";
 
 const posts = await getCollection("posts");
 
-const essayPosts = posts.filter(
-  (post) => post.data.category === "随笔"
-);
+const essayPosts = posts
+  .filter((post) => post.data.category === "随笔")
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <!doctype html>
@@ -51,7 +52,6 @@ const essayPosts = posts.filter(
 
   </header>
 
-
   <main>
 
     <div class="breadcrumb">
@@ -66,16 +66,13 @@ const essayPosts = posts.filter(
 
     </div>
 
-
     <h1>
       随笔
     </h1>
 
-
     <p class="intro">
       记录日常的想法、感受与生活。
     </p>
-
 
     <section>
 
@@ -83,9 +80,7 @@ const essayPosts = posts.filter(
         文章
       </h2>
 
-
       {
-
         essayPosts.length === 0 ? (
 
           <p class="empty">
@@ -108,13 +103,11 @@ const essayPosts = posts.filter(
 
               </h3>
 
-
               <p>
 
                 {post.data.description}
 
               </p>
-
 
               <div class="date">
 
@@ -127,13 +120,11 @@ const essayPosts = posts.filter(
           ))
 
         )
-
       }
 
     </section>
 
   </main>
-
 
   <footer>
 
@@ -141,11 +132,9 @@ const essayPosts = posts.filter(
 
   </footer>
 
-
 </body>
 
 </html>
-
 
 <style>
 
@@ -154,7 +143,6 @@ const essayPosts = posts.filter(
   box-sizing: border-box;
 
 }
-
 
 :global(body) {
 
@@ -178,7 +166,6 @@ const essayPosts = posts.filter(
 
 }
 
-
 header {
 
   background: white;
@@ -187,7 +174,6 @@ header {
     1px solid #e5e5e5;
 
 }
-
 
 .header-inner {
 
@@ -205,7 +191,6 @@ header {
 
 }
 
-
 .logo {
 
   color: #222;
@@ -216,7 +201,6 @@ header {
 
 }
 
-
 nav {
 
   display: flex;
@@ -224,7 +208,6 @@ nav {
   gap: 20px;
 
 }
-
 
 nav a {
 
@@ -234,7 +217,6 @@ nav a {
 
 }
 
-
 main {
 
   width: min(800px, 92%);
@@ -242,7 +224,6 @@ main {
   margin: 50px auto;
 
 }
-
 
 .breadcrumb {
 
@@ -252,13 +233,11 @@ main {
 
 }
 
-
 .breadcrumb a {
 
   color: #666;
 
 }
-
 
 h1 {
 
@@ -268,13 +247,11 @@ h1 {
 
 }
 
-
 .intro {
 
   color: #777;
 
 }
-
 
 article {
 
@@ -291,13 +268,11 @@ article {
 
 }
 
-
 article h3 {
 
   margin-top: 0;
 
 }
-
 
 article h3 a {
 
@@ -307,13 +282,11 @@ article h3 a {
 
 }
 
-
 article h3 a:hover {
 
   text-decoration: underline;
 
 }
-
 
 article p {
 
@@ -323,7 +296,6 @@ article p {
 
 }
 
-
 .date {
 
   color: #999;
@@ -332,13 +304,11 @@ article p {
 
 }
 
-
 .empty {
 
   color: #999;
 
 }
-
 
 footer {
 
@@ -349,7 +319,6 @@ footer {
   text-align: center;
 
 }
-
 
 @media (max-width: 700px) {
 
@@ -365,7 +334,6 @@ footer {
 
   }
 
-
   nav {
 
     flex-wrap: wrap;
@@ -374,7 +342,6 @@ footer {
 
   }
 
-
   main {
 
     width: 94%;
@@ -382,7 +349,6 @@ footer {
     margin: 40px auto;
 
   }
-
 
   h1 {
 

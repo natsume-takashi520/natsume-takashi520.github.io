@@ -1,11 +1,14 @@
+
 ---
 import { getCollection } from "astro:content";
 
 const posts = await getCollection("posts");
 
-const mobreiPosts = posts.filter(
-  (post) => post.data.category === "茂灵"
-);
+const mobreiPosts = posts
+  .filter((post) => post.data.category === "茂灵")
+  .sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  );
 ---
 
 <!doctype html>
@@ -51,7 +54,6 @@ const mobreiPosts = posts.filter(
 
   </header>
 
-
   <main>
 
     <h1>茂灵</h1>
@@ -59,7 +61,6 @@ const mobreiPosts = posts.filter(
     <p class="intro">
       关于茂灵的作品、灵感与记录。
     </p>
-
 
     <div class="types">
 
@@ -72,7 +73,6 @@ const mobreiPosts = posts.filter(
       </a>
 
     </div>
-
 
     <section>
 
@@ -96,12 +96,14 @@ const mobreiPosts = posts.filter(
               <h3>
 
                 <a href={`/posts/${post.id}/`}>
-
                   {post.data.title}
-
                 </a>
 
               </h3>
+
+              <p class="date">
+                {post.data.date.toLocaleDateString("zh-CN")}
+              </p>
 
               <p>
                 {post.data.description}
@@ -118,18 +120,15 @@ const mobreiPosts = posts.filter(
 
   </main>
 
-
   <footer>
 
     © 2026 Natsume's Blog
 
   </footer>
 
-
 </body>
 
 </html>
-
 
 <style>
 
@@ -138,200 +137,127 @@ const mobreiPosts = posts.filter(
 }
 
 :global(body) {
-
   margin: 0;
-
   background: #f7f7f7;
-
   color: #222;
-
   font-family:
-
     -apple-system,
-
     BlinkMacSystemFont,
-
     "Segoe UI",
-
     "Microsoft YaHei",
-
     sans-serif;
-
 }
 
 header {
-
   background: white;
-
-  border-bottom:
-    1px solid #e5e5e5;
-
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .header-inner {
-
   width: min(900px, 92%);
-
   min-height: 70px;
-
   margin: auto;
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
 }
 
 .logo {
-
   color: #222;
-
   font-weight: bold;
-
   text-decoration: none;
-
 }
 
 nav {
-
   display: flex;
-
   gap: 20px;
-
 }
 
 nav a {
-
   color: #555;
-
   text-decoration: none;
-
 }
 
 main {
-
   width: min(800px, 92%);
-
   margin: 60px auto;
-
 }
 
 h1 {
-
   font-size: 40px;
-
 }
 
 .intro {
-
   color: #777;
-
 }
 
 .types {
-
   display: flex;
-
   gap: 15px;
-
   margin: 35px 0;
-
 }
 
 .types a {
-
   padding: 12px 20px;
-
   background: white;
-
   border: 1px solid #ddd;
-
   border-radius: 8px;
-
   color: #333;
-
   text-decoration: none;
-
 }
 
 article {
-
   margin: 20px 0;
-
   padding: 25px;
-
   background: white;
-
   border: 1px solid #e5e5e5;
-
   border-radius: 10px;
-
 }
 
 .category {
-
   color: #888;
-
   font-size: 13px;
-
 }
 
 article h3 a {
-
   color: #222;
-
   text-decoration: none;
+}
 
+.date {
+  color: #999;
+  font-size: 13px;
+  margin: 8px 0;
 }
 
 article p {
-
   color: #666;
-
   line-height: 1.7;
-
 }
 
 footer {
-
   padding: 40px;
-
   color: #999;
-
   text-align: center;
-
 }
 
 @media (max-width: 700px) {
 
   .header-inner {
-
     padding: 18px 0;
-
     flex-direction: column;
-
     align-items: flex-start;
-
     gap: 15px;
-
   }
 
   nav {
-
     flex-wrap: wrap;
-
     gap: 15px;
-
   }
 
   main {
-
     width: 94%;
-
     margin: 40px auto;
-
   }
 
 }
